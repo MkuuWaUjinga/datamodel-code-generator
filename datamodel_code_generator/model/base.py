@@ -160,7 +160,7 @@ class DataModelFieldBase(_BaseModel):
             description = self.extras.get('description', None)
             example = self.extras.get('example', None)
             if example is not None:
-                description +=  "\nExample: " + example
+                description +=  "\nExample: " + str(example)
             if description is not None:
                 return f'{description}'
         return None
