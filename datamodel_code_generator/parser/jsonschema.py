@@ -513,9 +513,9 @@ class JsonSchemaParser(Parser):
             desc = ""
         if example is None:
             example = ""
-        if example is None:
+        if not example:
             return desc
-        if desc is None:
+        if not desc:
             return "Example: " + str(example)
         return desc + "\nExample: " + str(example)
 
