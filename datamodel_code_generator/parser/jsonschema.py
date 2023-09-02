@@ -504,10 +504,16 @@ class JsonSchemaParser(Parser):
             *self.field_extra_keys_without_x_prefix,
         }
     
-    def get_example(self, obj: JsonSchemaObject) -> str:
-        if obj.example is not None:
-            return "\nExample: " +  obj.example
-        return ''
+    def get_description(self, obj: JsonSchemaObject) -> str:
+        if obj.description is None and obj.example is None:
+            return None
+        desc = obj.description
+        example = obj.example
+        if desc is None:
+            desc = ""
+        if example is None:
+            example = ""
+        return desc if example is None else desc + "\nExample: " + example
 
     def get_field_extras(self, obj: JsonSchemaObject) -> Dict[str, Any]:
         if self.field_include_all_keys:
@@ -711,7 +717,7 @@ class JsonSchemaParser(Parser):
             custom_template_dir=self.custom_template_dir,
             extra_template_data=self.extra_template_data,
             path=self.current_source_path,
-            description=obj.description + self.get_example(obj) if self.use_schema_description else None,
+            description=obj.description + self.get_description(obj) if self.use_schema_description else None,
         )
         self.results.append(data_model_type)
 
@@ -829,7 +835,7 @@ class JsonSchemaParser(Parser):
             custom_template_dir=self.custom_template_dir,
             extra_template_data=self.extra_template_data,
             path=self.current_source_path,
-            description=obj.description + self.get_example(obj) if self.use_schema_description else None,
+            description=obj.description + self.get_description(obj) if self.use_schema_description else None,
             nullable=obj.type_has_null,
         )
         self.results.append(data_model_root)
@@ -951,7 +957,7 @@ class JsonSchemaParser(Parser):
             custom_template_dir=self.custom_template_dir,
             extra_template_data=self.extra_template_data,
             path=self.current_source_path,
-            description=obj.description + self.get_example(obj) if self.use_schema_description else None,
+            description=obj.description + self.get_description(obj) if self.use_schema_description else None,
             nullable=obj.type_has_null,
         )
         self.results.append(data_model_type)
@@ -1201,7 +1207,7 @@ class JsonSchemaParser(Parser):
             custom_template_dir=self.custom_template_dir,
             extra_template_data=self.extra_template_data,
             path=self.current_source_path,
-            description=obj.description + self.get_example(obj) if self.use_schema_description else None,
+            description=obj.description + self.get_description(obj) if self.use_schema_description else None,
             nullable=obj.type_has_null,
         )
         self.results.append(data_model_root)
@@ -1361,7 +1367,7 @@ class JsonSchemaParser(Parser):
                 reference=reference_,
                 fields=enum_fields,
                 path=self.current_source_path,
-                description=obj.description + self.get_example(obj) if self.use_schema_description else None,
+                description=obj.description + self.get_description(obj) if self.use_schema_description else None,
                 custom_template_dir=self.custom_template_dir,
                 type_=_get_type(obj.type, obj.format)
                 if self.use_subclass_enum and isinstance(obj.type, str)
