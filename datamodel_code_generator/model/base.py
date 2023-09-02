@@ -158,9 +158,6 @@ class DataModelFieldBase(_BaseModel):
     def docstring(self) -> Optional[str]:
         if self.use_field_description:
             description = self.extras.get('description', None)
-            example = self.extras.get('example', None)
-            if example is not None:
-                description +=  "\nExample: " + str(example)
             if description is not None:
                 return f'{description}'
         return None
