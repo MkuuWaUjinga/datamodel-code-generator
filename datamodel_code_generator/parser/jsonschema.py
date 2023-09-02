@@ -513,7 +513,11 @@ class JsonSchemaParser(Parser):
             desc = ""
         if example is None:
             example = ""
-        return desc if example is None else desc + "\nExample: " + str(example)
+        if example is None:
+            return desc
+        if desc is None:
+            return "Example: " + str(example)
+        return desc + "\nExample: " + str(example)
 
     def get_field_extras(self, obj: JsonSchemaObject) -> Dict[str, Any]:
         if self.field_include_all_keys:
