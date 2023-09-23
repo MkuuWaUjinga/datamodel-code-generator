@@ -402,7 +402,7 @@ class OpenAPIParser(JsonSchemaParser):
         for parameter in parameters:
             parameter = self.resolve_object(parameter, ParameterObject)
             parameter_name = parameter.name
-            if not parameter_name or parameter.in_ != ParameterLocation.query:
+            if not parameter_name or parameter.in_ == ParameterLocation.header or parameter.in_ == ParameterLocation.cookie:
                 continue
             field_name, alias = self.model_resolver.get_valid_field_name_and_alias(
                 field_name=parameter_name, excludes=exclude_field_names
@@ -502,7 +502,7 @@ class OpenAPIParser(JsonSchemaParser):
             path_name = operation.operationId
             method = ''
         self.parse_all_parameters(
-            self._get_model_name(path_name, method, suffix='ParametersQuery'),
+            self._get_model_name(path_name, method, suffix='Parameters'),
             operation.parameters,
             [*path, 'parameters'],
         )
