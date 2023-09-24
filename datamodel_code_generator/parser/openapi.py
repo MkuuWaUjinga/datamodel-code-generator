@@ -409,6 +409,12 @@ class OpenAPIParser(JsonSchemaParser):
             field_name, alias = self.model_resolver.get_valid_field_name_and_alias(
                 field_name=parameter_name, excludes=exclude_field_names
             )
+            # suffix path parameters with _path. Take old field_name or alias if not None as alias 
+            if parameter.in_ == ParameterLocation.path:
+                if alias is None:
+                    alias = field_name
+                field_name += '_path'
+
             if parameter.schema_:
                 fields.append(
                     self.get_object_field(
