@@ -416,6 +416,10 @@ class OpenAPIParser(JsonSchemaParser):
                 field_name += '_path'
 
             if parameter.schema_:
+                if parameter.schema_.description is None:
+                    parameter.schema_.extras["description"] = parameter.description
+                if parameter.schema_.example is None:
+                    parameter.schema_.extras["example"] = parameter.example
                 fields.append(
                     self.get_object_field(
                         field_name=field_name,
@@ -456,6 +460,13 @@ class OpenAPIParser(JsonSchemaParser):
                     data_type = self.data_type(data_types=data_types)
                     # multiple data_type parse as non-constraints field
                     object_schema = None
+
+                if object_schema is not None: 
+                    if object_schema.description is None:
+                        object_schema.extras["description"] = parameter.description
+                    if object_schema.example is None:
+                        object_schema.extras["example"] = parameter.example
+
                 fields.append(
                     self.data_model_field_type(
                         name=field_name,
