@@ -502,6 +502,7 @@ class OpenAPIParser(JsonSchemaParser):
                     fields=fields,
                     reference=reference,
                     custom_base_class=self.base_class,
+                    extra_template_data=self.extra_template_data,
                 )
             )
 
